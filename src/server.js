@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000;
 try {
   await sequelize.authenticate();
 
+  await sequelize.sync();
+
   console.log("Conectado ao banco de dados.");
 
   app.listen(PORT, () => {
