@@ -1,19 +1,18 @@
-import dotenv from "dotenv/config.js";
-import sequelize from "./config/database.js";
+import "dotenv/config";
 import app from "./app.js";
+import prisma from "./config/database.js";
 
 const PORT = process.env.PORT || 3000;
 
 try {
-  await sequelize.authenticate();
+  await prisma.$connect();
 
-  await sequelize.sync();
-
-  console.log("Conectado ao banco de dados.");
+  console.log("Banco conectado com sucesso.");
 
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
 } catch (error) {
   console.error("Erro ao iniciar o servidor:", error);
+  process.exit(1);
 }

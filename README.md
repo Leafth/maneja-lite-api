@@ -2,8 +2,8 @@
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%23003B57.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![Sequelize](https://img.shields.io/badge/sequelize-%2352B0E7.svg?style=for-the-badge&logo=sequelize&logoColor=white)
 
 ### Requisitos
 
@@ -25,6 +25,27 @@ Crie um arquivo `.env` na raiz do projeto:
 
 ```env
 PORT=3000
+DATABASE_URL="file:../database/database.sqlite"
+```
+
+### Prisma
+
+Gere o Prisma Client:
+
+```bash
+npx prisma generate
+```
+
+Aplique as migrations do banco de dados:
+
+```bash
+npx prisma migrate dev
+```
+
+Para visualizar os dados do banco:
+
+```bash
+npx prisma studio
 ```
 
 ### Executar em desenvolvimento
