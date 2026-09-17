@@ -1,10 +1,18 @@
-import dotenv from "dotenv/config.js";
+import "dotenv/config";
 import app from "./app.js";
+import prisma from "./config/database.js";
 
 const PORT = process.env.PORT || 3000;
 
-console.log("Conectado ao banco de dados.");
+try {
+  await prisma.$connect();
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+  console.log("Banco conectado com sucesso.");
+
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+} catch (error) {
+  console.error("Erro ao iniciar o servidor:", error);
+  process.exit(1);
+}
