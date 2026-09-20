@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
+import "dotenv/config";
 
 import router from "./routes/index.js";
 import { swaggerSpec } from "./config/swagger.js";
