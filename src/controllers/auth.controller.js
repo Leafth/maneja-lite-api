@@ -97,3 +97,27 @@ export async function login(req, res) {
     });
   }
 }
+
+export async function obterPerfil(req, res) {
+  try {
+    const usuario = await usuarioRepository.buscarPorId(req.usuarioId);
+
+    if (!usuario) {
+      return res.status(404).json({
+        mensagem: "Usuário não encontrado.",
+      });
+    }
+
+    return res.status(200).json({
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      mensagem: "Erro interno do servidor.",
+    });
+  }
+}
