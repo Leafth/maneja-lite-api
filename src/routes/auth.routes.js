@@ -1,6 +1,11 @@
 import { Router } from "express";
 
-import { cadastrar, login } from "../controllers/auth.controller.js";
+import {
+  cadastrar,
+  login,
+  obterPerfil,
+} from "../controllers/auth.controller.js";
+import { autenticar } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -115,5 +120,39 @@ router.post("/register", cadastrar);
  *         description: Erro interno do servidor
  */
 router.post("/login", login);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Obtém o perfil do usuário autenticado
+ *     description: Retorna os dados do usuário autenticado com base no token JWT fornecido.
+ *     tags:
+ *       - Autenticação
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil do usuário autenticado
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: "550e8400-e29b-41d4-a716-446655440000"
+ *               nome: Carlos
+ *               email: carlos@email.com
+ *       401:
+ *         description: Token inválido ou expirado
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensagem: Token inválido ou expirado.
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             example:
+ *               mensagem: Erro interno do servidor.
+ */
+router.get("/me", autenticar, obterPerfil);
 
 export default router;

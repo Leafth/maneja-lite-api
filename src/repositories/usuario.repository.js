@@ -19,6 +19,12 @@ const usuarioRepository = {
       },
     });
   },
+
+  buscarPorId(id) {
+    return prisma.usuario.findUnique({
+      where: { id },
+    });
+  },
 };
 
 export default usuarioRepository;

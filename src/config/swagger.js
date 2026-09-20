@@ -11,6 +11,16 @@ const options = {
         "Documentação da API simplificada do MANEJA para a disciplina de Desenvolvimento de Software para Dispositivos Móveis",
     },
 
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+
     servers: [
       {
         url: "http://localhost:3000/api",
