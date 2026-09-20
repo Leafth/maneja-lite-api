@@ -13,6 +13,12 @@ export async function cadastrar(req, res) {
       });
     }
 
+    if (senha.length < 6) {
+      return res.status(400).json({
+        mensagem: "A senha deve possuir pelo menos 6 caracteres.",
+      });
+    }
+
     const emailNormalizado = email.trim().toLowerCase();
 
     const usuarioExistente =
