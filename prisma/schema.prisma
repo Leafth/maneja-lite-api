@@ -16,3 +16,20 @@ model Usuario {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+enum StatusTerreno {
+  DISPONIVEL
+  OCUPADO
+  EM_DESCANSO
+}
+
+model Terreno {
+  id              String        @id @default(uuid())
+  nome            String
+  periodoDescanso Int
+  status          StatusTerreno @default(DISPONIVEL)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("terrenos")
+}
