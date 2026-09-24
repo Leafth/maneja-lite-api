@@ -16,6 +16,25 @@ function validarDados({ nome, quantidade }) {
   return null;
 }
 
+function validarAtualizacao({ nome, quantidade }) {
+  if (nome !== undefined && (!nome || nome.trim() === "")) {
+    return "Nome não pode ser vazio.";
+  }
+
+  if (
+    quantidade !== undefined &&
+    (typeof quantidade !== "number" || !Number.isInteger(quantidade))
+  ) {
+    return "Quantidade deve ser um número inteiro.";
+  }
+
+  if (quantidade !== undefined && quantidade < 0) {
+    return "Quantidade não pode ser negativa.";
+  }
+
+  return null;
+}
+
 export async function listarGrupos(req, res) {
   try {
     const grupos = await grupoRepository.listar();
@@ -84,11 +103,11 @@ export async function atualizarGrupo(req, res) {
     const { id } = req.params;
     const { nome, quantidade } = req.body;
 
-    const erro = validarDados({ nome, quantidade });
+    const error = validarAtualizacao({ nome, quantidade });
 
-    if (erro) {
+    if (error) {
       return res.status(400).json({
-        mensagem: erro,
+        mensagem: error,
       });
     }
 
@@ -100,10 +119,17 @@ export async function atualizarGrupo(req, res) {
       });
     }
 
-    const grupo = await grupoRepository.atualizar(id, {
-      nome: nome.trim(),
-      quantidade,
-    });
+    const dados = {};
+
+    if (nome !== undefined) {
+      dados.nome = nome.trim();
+    }
+
+    if (quantidade !== undefined) {
+      dados.quantidade = quantidade;
+    }
+
+    const grupo = await grupoRepository.atualizar(id, dados);
 
     return res.status(200).json(grupo);
   } catch (error) {
