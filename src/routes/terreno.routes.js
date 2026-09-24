@@ -169,6 +169,93 @@ router.get("/", listarTerrenos);
  */
 router.get("/:id", obterTerreno);
 
+/**
+ * @swagger
+ * /terrenos/{id}/ocupacao/atual:
+ *   get:
+ *     summary: Obtém a ocupação atual de um terreno
+ *     description: Retorna os dados da ocupação atual de um terreno específico.
+ *     tags:
+ *       - Terrenos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do terreno
+ *         example: "f3dbf5b6-e8e2-4102-a1ed-6814d1a6a492"
+ *     responses:
+ *       200:
+ *         description: Ocupação atual encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   format: uuid
+ *                 grupoId:
+ *                   type: string
+ *                   format: uuid
+ *                 terrenoId:
+ *                   type: string
+ *                   format: uuid
+ *                 dataEntrada:
+ *                   type: string
+ *                   format: date-time
+ *                 dataSaida:
+ *                   type: string
+ *                   format: date-time
+ *                   nullable: true
+ *                 descansoAte:
+ *                   type: string
+ *                   format: date-time
+ *                   nullable: true
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                 grupo:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       format: uuid
+ *                     nome:
+ *                       type: string
+ *                     quantidade:
+ *                       type: integer
+ *               example:
+ *                 id: "3bd5e2df-012b-4179-ac0b-cc88356ecb95"
+ *                 grupoId: "70dbd223-6bf9-4d9e-8937-2b3c2d406b65"
+ *                 terrenoId: "f3dbf5b6-e8e2-4102-a1ed-6814d1a6a492"
+ *                 dataEntrada: "2026-09-24T22:55:51.308Z"
+ *                 dataSaida: null
+ *                 descansoAte: null
+ *                 createdAt: "2026-09-24T22:55:51.316Z"
+ *                 updatedAt: "2026-09-24T22:55:51.316Z"
+ *                 grupo:
+ *                   id: "70dbd223-6bf9-4d9e-8937-2b3c2d406b65"
+ *                   nome: "Lote 12"
+ *                   quantidade: 35
+ *       401:
+ *         description: Token inválido ou expirado
+ *       404:
+ *         description: Terreno não encontrado ou sem ocupação atual
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Terreno não possui ocupação ativa"
+ *       500:
+ *         description: Erro interno do servidor
+ */
 router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorTerreno);
 
 /**

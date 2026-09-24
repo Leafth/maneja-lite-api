@@ -83,6 +83,105 @@ router.get("/", listarGrupos);
  */
 router.get("/:id", buscarGrupoPorId);
 
+/**
+ * @swagger
+ * /grupos/{id}/ocupacao/atual:
+ *   get:
+ *     summary: Obtém a ocupação atual de um grupo de animais
+ *     description: Retorna os dados da ocupação atual de um grupo de animais específico.
+ *     tags:
+ *       - Grupos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do grupo
+ *         example: "70dbd223-6bf9-4d9e-8937-2b3c2d406b65"
+ *     responses:
+ *       200:
+ *         description: Ocupação atual encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   format: uuid
+ *                 grupoId:
+ *                   type: string
+ *                   format: uuid
+ *                 terrenoId:
+ *                   type: string
+ *                   format: uuid
+ *                 dataEntrada:
+ *                   type: string
+ *                   format: date-time
+ *                 dataSaida:
+ *                   type: string
+ *                   format: date-time
+ *                   nullable: true
+ *                 descansoAte:
+ *                   type: string
+ *                   format: date-time
+ *                   nullable: true
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                 terreno:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       format: uuid
+ *                     nome:
+ *                       type: string
+ *                     periodoDescanso:
+ *                       type: integer
+ *                     status:
+ *                       type: string
+ *                       enum:
+ *                         - DISPONIVEL
+ *                         - OCUPADO
+ *                         - EM_DESCANSO
+ *                     disponivelEm:
+ *                       type: string
+ *                       format: date-time
+ *                       nullable: true
+ *               example:
+ *                 id: "3bd5e2df-012b-4179-ac0b-cc88356ecb95"
+ *                 grupoId: "70dbd223-6bf9-4d9e-8937-2b3c2d406b65"
+ *                 terrenoId: "f3dbf5b6-e8e2-4102-a1ed-6814d1a6a492"
+ *                 dataEntrada: "2026-09-24T22:55:51.308Z"
+ *                 dataSaida: null
+ *                 descansoAte: null
+ *                 createdAt: "2026-09-24T22:55:51.316Z"
+ *                 updatedAt: "2026-09-24T22:55:51.316Z"
+ *                 terreno:
+ *                   id: "f3dbf5b6-e8e2-4102-a1ed-6814d1a6a492"
+ *                   nome: "Terreno Norte"
+ *                   periodoDescanso: 30
+ *                   status: "OCUPADO"
+ *                   disponivelEm: null
+ *       401:
+ *         description: Token inválido ou expirado
+ *       404:
+ *         description: Grupo não encontrado ou sem ocupação atual
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Grupo não possui ocupação ativa"
+ *       500:
+ *         description: Erro interno do servidor
+ */
 router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorGrupo);
 
 /**
