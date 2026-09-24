@@ -12,6 +12,21 @@ function validarDadosTerreno(nome, periodoDescanso) {
   return null;
 }
 
+function validarDadosTerrenoAtualizacao(nome, periodoDescanso) {
+  if (nome !== undefined && (typeof nome !== "string" || nome.trim() === "")) {
+    return "Nome não pode ser vazio.";
+  }
+
+  if (
+    periodoDescanso !== undefined &&
+    (!Number.isInteger(periodoDescanso) || periodoDescanso < 0)
+  ) {
+    return "O período de descanso deve ser um número inteiro maior ou igual a 0.";
+  }
+
+  return null;
+}
+
 export async function criarTerreno(req, res) {
   try {
     const { nome, periodoDescanso } = req.body;
@@ -74,7 +89,7 @@ export async function atualizarTerreno(req, res) {
     const { id } = req.params;
     const { nome, periodoDescanso } = req.body;
 
-    const erroValidacao = validarDadosTerreno(nome, periodoDescanso);
+    const erroValidacao = validarDadosTerrenoAtualizacao(nome, periodoDescanso);
 
     if (erroValidacao) {
       return res.status(400).json({ mensagem: erroValidacao });
@@ -86,10 +101,17 @@ export async function atualizarTerreno(req, res) {
       return res.status(404).json({ mensagem: "Terreno não encontrado." });
     }
 
-    const terreno = await terrenoRepository.atualizar(id, {
-      nome: nome.trim(),
-      periodoDescanso,
-    });
+    const dados = {};
+
+    if (nome !== undefined) {
+      dados.nome = nome.trim();
+    }
+
+    if (periodoDescanso !== undefined) {
+      dados.periodoDescanso = periodoDescanso;
+    }
+
+    const terreno = await terrenoRepository.atualizar(id, dados);
 
     return res.status(200).json(terreno);
   } catch (error) {
