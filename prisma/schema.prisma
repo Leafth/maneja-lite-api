@@ -18,9 +18,9 @@ model Usuario {
 }
 
 model Grupo {
-  id       String   @id @default(uuid())
-  nome      String
+  id         String   @id @default(uuid())
+  nome       String
   quantidade Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
