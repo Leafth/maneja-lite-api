@@ -58,3 +58,52 @@ export async function criarOcupacao(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function buscarOcupacaoAtualPorGrupo(req, res) {
+  try {
+    const { id } = req.params;
+
+    const grupo = await grupoRepository.buscarPorId(id);
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const ocupacaoAtual = await ocupacaoRepository.buscarAtualPorGrupo(id);
+
+    if (!ocupacaoAtual) {
+      return res
+        .status(404)
+        .json({ error: "Nenhuma ocupação atual encontrada para este grupo" });
+    }
+
+    return res.status(200).json(ocupacaoAtual);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarOcupacaoAtualPorTerreno(req, res) {
+  try {
+    const { id } = req.params;
+
+    const terreno = await terrenoRepository.buscarPorId(id);
+
+    if (!terreno) {
+      return res.status(404).json({ error: "Terreno não encontrado" });
+    }
+
+    const ocupacaoAtual =
+      await ocupacaoRepository.buscarAtualPorTerreno(id);
+
+    if (!ocupacaoAtual) {
+      return res
+        .status(404)
+        .json({ error: "Nenhuma ocupação atual encontrada para este terreno" });
+    }
+
+    return res.status(200).json(ocupacaoAtual);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

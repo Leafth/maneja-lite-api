@@ -8,6 +8,7 @@ import {
   excluirGrupo,
 } from "../controllers/grupo.controller.js";
 import { autenticar } from "../middlewares/auth.middleware.js";
+import { buscarOcupacaoAtualPorGrupo } from "../controllers/ocupacoes.controller.js";
 
 const router = Router();
 
@@ -81,6 +82,8 @@ router.get("/", listarGrupos);
  *         description: Erro interno do servidor
  */
 router.get("/:id", buscarGrupoPorId);
+
+router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorGrupo);
 
 /**
  * @swagger

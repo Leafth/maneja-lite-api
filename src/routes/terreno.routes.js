@@ -8,6 +8,7 @@ import {
   obterTerreno,
 } from "../controllers/terreno.controller.js";
 import { autenticar } from "../middlewares/auth.middleware.js";
+import { buscarOcupacaoAtualPorTerreno } from "../controllers/ocupacoes.controller.js";
 
 const router = Router();
 
@@ -167,6 +168,8 @@ router.get("/", listarTerrenos);
  *               mensagem: Erro interno do servidor.
  */
 router.get("/:id", obterTerreno);
+
+router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorTerreno);
 
 /**
  * @swagger
