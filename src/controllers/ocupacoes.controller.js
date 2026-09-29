@@ -107,3 +107,56 @@ export async function buscarOcupacaoAtualPorTerreno(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function buscarHistoricoPorGrupo(req, res) {
+  try {
+    const { id } = req.params;
+
+    const grupo = await grupoRepository.buscarPorId(id);
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const ocupacoes = await ocupacaoRepository.buscarHistoricoPorGrupo(id);
+
+    return res.status(200).json(ocupacoes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarHistoricoPorTerreno(req, res) {
+  try {
+    const { id } = req.params;
+
+    const terreno = await terrenoRepository.buscarPorId(id);
+
+    if (!terreno) {
+      return res.status(404).json({ error: "Terreno não encontrado" });
+    }
+
+    const ocupacoes =
+      await ocupacaoRepository.buscarHistoricoPorTerreno(id);
+
+    return res.status(200).json(ocupacoes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarOcupacaoPorId(req, res) {
+  try {
+    const { id } = req.params;
+
+    const ocupacao = await ocupacaoRepository.buscarPorId(id);
+
+    if (!ocupacao) {
+      return res.status(404).json({ error: "Ocupação não encontrada" });
+    }
+
+    return res.status(200).json(ocupacao);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
