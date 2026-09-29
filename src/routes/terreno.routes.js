@@ -293,7 +293,7 @@ router.get("/:id/ocupacoes", buscarHistoricoPorTerreno);
 /**
  * @swagger
  * /terrenos/{id}:
- *   put:
+ *   patch:
  *     summary: Atualiza um terreno
  *     description: Atualiza o nome e o período de descanso de um terreno. O status não pode ser alterado por esta rota.
  *     tags:
@@ -369,7 +369,7 @@ router.get("/:id/ocupacoes", buscarHistoricoPorTerreno);
  *             example:
  *               mensagem: Erro interno do servidor.
  */
-router.put("/:id", atualizarTerreno);
+router.patch("/:id", atualizarTerreno);
 
 /**
  * @swagger

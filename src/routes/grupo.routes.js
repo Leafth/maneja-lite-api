@@ -280,7 +280,7 @@ router.post("/", criarGrupo);
 /**
  * @swagger
  * /grupos/{id}:
- *   put:
+ *   patch:
  *     summary: Atualiza um grupo de animais
  *     description: Atualiza o nome e a quantidade de um grupo de animais existente.
  *     tags:
@@ -334,7 +334,7 @@ router.post("/", criarGrupo);
  *       500:
  *         description: Erro interno do servidor
  */
-router.put("/:id", atualizarGrupo);
+router.patch("/:id", atualizarGrupo);
 
 /**
  * @swagger
