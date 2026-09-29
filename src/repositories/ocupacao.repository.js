@@ -31,6 +31,46 @@ const ocupacaoRepository = {
     });
   },
 
+  buscarHistoricoPorGrupo(grupoId) {
+    return prisma.ocupacao.findMany({
+      where: {
+        grupoId,
+      },
+      include: {
+        terreno: true,
+      },
+      orderBy: {
+        dataEntrada: "desc",
+      },
+    });
+  },
+
+  buscarHistoricoPorTerreno(terrenoId) {
+    return prisma.ocupacao.findMany({
+      where: {
+        terrenoId,
+      },
+      include: {
+        grupo: true,
+      },
+      orderBy: {
+        dataEntrada: "desc",
+      },
+    });
+  },
+
+  buscarPorId(id) {
+    return prisma.ocupacao.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        grupo: true,
+        terreno: true,
+      },
+    });
+  },
+
   registrarOcupacao({
     grupoId,
     terrenoId,
