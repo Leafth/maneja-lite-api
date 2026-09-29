@@ -11,6 +11,29 @@ const options = {
         "Documentação da API simplificada do MANEJA para a disciplina de Desenvolvimento de Software para Dispositivos Móveis",
     },
 
+    tags: [
+      {
+        name: "Autenticação",
+        description: "Operações de autenticação de usuários",
+      },
+      {
+        name: "Resumo",
+        description: "Resumo das informações do sistema",
+      },
+      {
+        name: "Grupos",
+        description: "Gerenciamento dos grupos de animais",
+      },
+      {
+        name: "Terrenos",
+        description: "Gerenciamento dos terrenos",
+      },
+      {
+        name: "Ocupações",
+        description: "Gerenciamento das ocupações e movimentações",
+      },
+    ],
+
     components: {
       securitySchemes: {
         bearerAuth: {
