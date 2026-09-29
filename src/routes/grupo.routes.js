@@ -8,7 +8,10 @@ import {
   excluirGrupo,
 } from "../controllers/grupo.controller.js";
 import { autenticar } from "../middlewares/auth.middleware.js";
-import { buscarOcupacaoAtualPorGrupo } from "../controllers/ocupacoes.controller.js";
+import {
+  buscarOcupacaoAtualPorGrupo,
+  buscarHistoricoPorGrupo,
+} from "../controllers/ocupacoes.controller.js";
 
 const router = Router();
 
@@ -183,6 +186,35 @@ router.get("/:id", buscarGrupoPorId);
  *         description: Erro interno do servidor
  */
 router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorGrupo);
+
+/**
+ * @swagger
+ * /grupos/{id}/ocupacoes:
+ *   get:
+ *     summary: Lista o histórico de ocupações de um grupo
+ *     tags:
+ *       - Ocupações
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do grupo
+ *     responses:
+ *       200:
+ *         description: Histórico de ocupações do grupo
+ *       401:
+ *         description: Usuário não autenticado
+ *       404:
+ *         description: Grupo não encontrado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.get("/:id/ocupacoes", buscarHistoricoPorGrupo);
 
 /**
  * @swagger

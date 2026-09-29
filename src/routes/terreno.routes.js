@@ -8,7 +8,10 @@ import {
   obterTerreno,
 } from "../controllers/terreno.controller.js";
 import { autenticar } from "../middlewares/auth.middleware.js";
-import { buscarOcupacaoAtualPorTerreno } from "../controllers/ocupacoes.controller.js";
+import {
+  buscarOcupacaoAtualPorTerreno,
+  buscarHistoricoPorTerreno,
+} from "../controllers/ocupacoes.controller.js";
 
 const router = Router();
 
@@ -257,6 +260,35 @@ router.get("/:id", obterTerreno);
  *         description: Erro interno do servidor
  */
 router.get("/:id/ocupacao/atual", buscarOcupacaoAtualPorTerreno);
+
+/**
+ * @swagger
+ * /terrenos/{id}/ocupacoes:
+ *   get:
+ *     summary: Lista o histórico de ocupações de um terreno
+ *     tags:
+ *       - Ocupações
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do terreno
+ *     responses:
+ *       200:
+ *         description: Histórico de ocupações do terreno
+ *       401:
+ *         description: Usuário não autenticado
+ *       404:
+ *         description: Terreno não encontrado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.get("/:id/ocupacoes", buscarHistoricoPorTerreno);
 
 /**
  * @swagger

@@ -2,8 +2,6 @@ import { Router } from "express";
 import { autenticar } from "../middlewares/auth.middleware.js";
 import {
   criarOcupacao,
-  buscarHistoricoPorGrupo,
-  buscarHistoricoPorTerreno,
   buscarOcupacaoPorId,
 } from "../controllers/ocupacoes.controller.js";
 
@@ -87,64 +85,6 @@ router.use(autenticar);
  *         description: Erro interno do servidor
  */
 router.post("/", criarOcupacao);
-
-/**
- * @swagger
- * /grupos/{id}/ocupacoes:
- *   get:
- *     summary: Lista o histórico de ocupações de um grupo
- *     tags:
- *       - Ocupações
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *         description: ID do grupo
- *     responses:
- *       200:
- *         description: Histórico de ocupações do grupo
- *       401:
- *         description: Usuário não autenticado
- *       404:
- *         description: Grupo não encontrado
- *       500:
- *         description: Erro interno do servidor
- */
-router.get("/grupos/:id/ocupacoes", buscarHistoricoPorGrupo);
-
-/**
- * @swagger
- * /terrenos/{id}/ocupacoes:
- *   get:
- *     summary: Lista o histórico de ocupações de um terreno
- *     tags:
- *       - Ocupações
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *         description: ID do terreno
- *     responses:
- *       200:
- *         description: Histórico de ocupações do terreno
- *       401:
- *         description: Usuário não autenticado
- *       404:
- *         description: Terreno não encontrado
- *       500:
- *         description: Erro interno do servidor
- */
-router.get("/terrenos/:id/ocupacoes", buscarHistoricoPorTerreno);
 
 /**
  * @swagger
