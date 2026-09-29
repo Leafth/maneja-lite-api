@@ -1,17 +1,36 @@
 import prisma from "../config/database.js";
 
 const terrenoRepository = {
+  async liberarTerrenosDisponiveis() {
+    return prisma.terreno.updateMany({
+      where: {
+        status: "EM_DESCANSO",
+        disponivelEm: {
+          lte: new Date(),
+        },
+      },
+      data: {
+        status: "DISPONIVEL",
+        disponivelEm: null,
+      },
+    });
+  },
+
   criar(dados) {
     return prisma.terreno.create({ data: dados });
   },
 
-  buscarTodos() {
+  async buscarTodos() {
+    await this.liberarTerrenosDisponiveis();
+
     return prisma.terreno.findMany({
       orderBy: { createdAt: "desc" },
     });
   },
 
-  buscarPorId(id) {
+  async buscarPorId(id) {
+    await this.liberarTerrenosDisponiveis();
+
     return prisma.terreno.findUnique({
       where: { id },
     });

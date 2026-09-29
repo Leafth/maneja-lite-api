@@ -18,11 +18,12 @@ model Usuario {
 }
 
 model Grupo {
-  id         String   @id @default(uuid())
+  id         String     @id @default(uuid())
   nome       String
   quantidade Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  ocupacoes  Ocupacao[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 enum StatusTerreno {
@@ -36,8 +37,31 @@ model Terreno {
   nome            String
   periodoDescanso Int
   status          StatusTerreno @default(DISPONIVEL)
+  disponivelEm    DateTime?
+  ocupacoes       Ocupacao[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
   @@map("terrenos")
+}
+
+model Ocupacao {
+  id          String    @id @default(uuid())
+  grupoId     String
+  terrenoId   String
+  dataEntrada DateTime
+  dataSaida   DateTime?
+  descansoAte DateTime?
+
+  grupo   Grupo   @relation(fields: [grupoId], references: [id])
+  terreno Terreno @relation(fields: [terrenoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([grupoId])
+  @@index([terrenoId])
+  @@index([grupoId, dataEntrada])
+  @@index([terrenoId, dataEntrada])
+  @@map("ocupacoes")
 }
