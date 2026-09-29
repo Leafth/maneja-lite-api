@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { autenticar } from "../middlewares/auth.middleware.js";
-import { criarOcupacao } from "../controllers/ocupacoes.controller.js";
+import {
+  criarOcupacao,
+  buscarHistoricoPorGrupo,
+  buscarHistoricoPorTerreno,
+  buscarOcupacaoPorId,
+} from "../controllers/ocupacoes.controller.js";
 
 const router = Router();
 router.use(autenticar);
@@ -82,5 +87,8 @@ router.use(autenticar);
  *         description: Erro interno do servidor
  */
 router.post("/", criarOcupacao);
+router.get("/grupos/:id/ocupacoes", buscarHistoricoPorGrupo);
+router.get("/terrenos/:id/ocupacoes", buscarHistoricoPorTerreno);
+router.get("/:id", buscarOcupacaoPorId);
 
 export default router;
