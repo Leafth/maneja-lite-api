@@ -153,6 +153,14 @@ export async function excluirGrupo(req, res) {
       });
     }
 
+    const ocupacaoAtual = await grupoRepository.temOcupacaoAtual(id);
+
+    if (ocupacaoAtual) {
+      return res.status(409).json({
+        mensagem: "Não é possível inativar um grupo que está em ocupação.",
+      });
+    }
+
     await grupoRepository.excluir(id);
 
     return res.status(204).send();
