@@ -8,6 +8,7 @@ const terrenoRepository = {
         disponivelEm: {
           lte: new Date(),
         },
+        deletedAt: null,
       },
       data: {
         status: "DISPONIVEL",
@@ -24,6 +25,9 @@ const terrenoRepository = {
     await this.liberarTerrenosDisponiveis();
 
     return prisma.terreno.findMany({
+      where: {
+        deletedAt: null,
+      },
       orderBy: { createdAt: "desc" },
     });
   },
@@ -31,8 +35,11 @@ const terrenoRepository = {
   async buscarPorId(id) {
     await this.liberarTerrenosDisponiveis();
 
-    return prisma.terreno.findUnique({
-      where: { id },
+    return prisma.terreno.findFirst({
+      where: {
+        id,
+        deletedAt: null,
+      },
     });
   },
 
@@ -44,8 +51,20 @@ const terrenoRepository = {
   },
 
   excluir(id) {
-    return prisma.terreno.delete({
+    return prisma.terreno.update({
       where: { id },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  },
+
+  temOcupacaoAtual(id) {
+    return prisma.ocupacao.findFirst({
+      where: {
+        terrenoId: id,
+        dataSaida: null,
+      },
     });
   },
 };
