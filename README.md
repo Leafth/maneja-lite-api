@@ -26,6 +26,7 @@ Crie um arquivo `.env` na raiz do projeto:
 ```env
 PORT=3000
 DATABASE_URL="file:../database/database.sqlite"
+JWT_SECRET=
 ```
 
 ### Prisma
