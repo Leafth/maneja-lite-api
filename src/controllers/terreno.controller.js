@@ -130,7 +130,17 @@ export async function excluirTerreno(req, res) {
     const terrenoExistente = await terrenoRepository.buscarPorId(id);
 
     if (!terrenoExistente) {
-      return res.status(404).json({ mensagem: "Terreno não encontrado." });
+      return res.status(404).json({
+        mensagem: "Terreno não encontrado.",
+      });
+    }
+
+    const ocupacaoAtual = await terrenoRepository.temOcupacaoAtual(id);
+
+    if (ocupacaoAtual) {
+      return res.status(409).json({
+        mensagem: "Não é possível inativar um terreno que está em ocupação.",
+      });
     }
 
     await terrenoRepository.excluir(id);
