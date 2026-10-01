@@ -1,0 +1,162 @@
+import grupoRepository from "../repositories/grupo.repository.js";
+import terrenoRepository from "../repositories/terreno.repository.js";
+import ocupacaoRepository from "../repositories/ocupacao.repository.js";
+
+export async function criarOcupacao(req, res) {
+  try {
+    const { grupoId, terrenoId } = req.body ?? {};
+
+    if (!grupoId || !terrenoId) {
+      return res
+        .status(400)
+        .json({ error: "Grupo e Terreno são obrigatórios" });
+    }
+
+    const grupo = await grupoRepository.buscarPorId(grupoId);
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const terrenoDestino = await terrenoRepository.buscarPorId(terrenoId);
+
+    if (!terrenoDestino) {
+      return res.status(404).json({ error: "Terreno não encontrado" });
+    }
+
+    const ocupacaoAtual = await ocupacaoRepository.buscarAtualPorGrupo(grupoId);
+
+    if (ocupacaoAtual?.terrenoId === terrenoId) {
+      return res
+        .status(400)
+        .json({ error: "Grupo já está ocupando este terreno" });
+    }
+
+    if (terrenoDestino.status !== "DISPONIVEL") {
+      return res.status(400).json({ error: "Terreno não está disponível" });
+    }
+
+    let descansoAte = null;
+
+    if (ocupacaoAtual) {
+      descansoAte = new Date();
+
+      descansoAte.setDate(
+        descansoAte.getDate() + ocupacaoAtual.terreno.periodoDescanso,
+      );
+    }
+
+    const novaOcupacao = await ocupacaoRepository.registrarOcupacao({
+      grupoId,
+      terrenoId,
+      ocupacaoAtual,
+      descansoAte,
+    });
+
+    return res.status(201).json(novaOcupacao);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarOcupacaoAtualPorGrupo(req, res) {
+  try {
+    const { id } = req.params;
+
+    const grupo = await grupoRepository.buscarPorId(id);
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const ocupacaoAtual = await ocupacaoRepository.buscarAtualPorGrupo(id);
+
+    if (!ocupacaoAtual) {
+      return res
+        .status(404)
+        .json({ error: "Nenhuma ocupação atual encontrada para este grupo" });
+    }
+
+    return res.status(200).json(ocupacaoAtual);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarOcupacaoAtualPorTerreno(req, res) {
+  try {
+    const { id } = req.params;
+
+    const terreno = await terrenoRepository.buscarPorId(id);
+
+    if (!terreno) {
+      return res.status(404).json({ error: "Terreno não encontrado" });
+    }
+
+    const ocupacaoAtual =
+      await ocupacaoRepository.buscarAtualPorTerreno(id);
+
+    if (!ocupacaoAtual) {
+      return res
+        .status(404)
+        .json({ error: "Nenhuma ocupação atual encontrada para este terreno" });
+    }
+
+    return res.status(200).json(ocupacaoAtual);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarHistoricoPorGrupo(req, res) {
+  try {
+    const { id } = req.params;
+
+    const grupo = await grupoRepository.buscarPorId(id);
+
+    if (!grupo) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const ocupacoes = await ocupacaoRepository.buscarHistoricoPorGrupo(id);
+
+    return res.status(200).json(ocupacoes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarHistoricoPorTerreno(req, res) {
+  try {
+    const { id } = req.params;
+
+    const terreno = await terrenoRepository.buscarPorId(id);
+
+    if (!terreno) {
+      return res.status(404).json({ error: "Terreno não encontrado" });
+    }
+
+    const ocupacoes =
+      await ocupacaoRepository.buscarHistoricoPorTerreno(id);
+
+    return res.status(200).json(ocupacoes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export async function buscarOcupacaoPorId(req, res) {
+  try {
+    const { id } = req.params;
+
+    const ocupacao = await ocupacaoRepository.buscarPorId(id);
+
+    if (!ocupacao) {
+      return res.status(404).json({ error: "Ocupação não encontrada" });
+    }
+
+    return res.status(200).json(ocupacao);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

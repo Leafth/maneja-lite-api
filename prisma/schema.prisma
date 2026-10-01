@@ -7,3 +7,63 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Grupo {
+  id         String     @id @default(uuid())
+  nome       String
+  quantidade Int
+  ocupacoes  Ocupacao[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  deletedAt  DateTime?
+}
+
+enum StatusTerreno {
+  DISPONIVEL
+  OCUPADO
+  EM_DESCANSO
+}
+
+model Terreno {
+  id              String        @id @default(uuid())
+  nome            String
+  periodoDescanso Int
+  status          StatusTerreno @default(DISPONIVEL)
+  disponivelEm    DateTime?
+  ocupacoes       Ocupacao[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  @@map("terrenos")
+}
+
+model Ocupacao {
+  id          String    @id @default(uuid())
+  grupoId     String
+  terrenoId   String
+  dataEntrada DateTime
+  dataSaida   DateTime?
+  descansoAte DateTime?
+
+  grupo   Grupo   @relation(fields: [grupoId], references: [id])
+  terreno Terreno @relation(fields: [terrenoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([grupoId])
+  @@index([terrenoId])
+  @@index([grupoId, dataEntrada])
+  @@index([terrenoId, dataEntrada])
+  @@map("ocupacoes")
+}

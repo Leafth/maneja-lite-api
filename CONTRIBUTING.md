@@ -105,7 +105,7 @@ O padrão REST deve ser utilizado quando aplicável:
 GET    /terrenos
 GET    /terrenos/:id
 POST   /terrenos
-PUT    /terrenos/:id
+PATCH    /terrenos/:id
 DELETE /terrenos/:id
 ```
 
